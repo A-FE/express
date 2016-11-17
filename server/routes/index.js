@@ -13,11 +13,14 @@ router.get('/login', function(req, res, next) {
 });
 
 router.get('/tuijian', function(req, res, next) {
-  res.render('tuijian', { title: '推荐' });
+    if(!req.cookies.user){
+      return res.render('login',{});
+  }
+    return res.render('tuijian',{});
 });
 
 router.get('/edit', function(req, res, next) {
-  if(!req.session.user){
+  if(!req.cookies.user){
     return res.render('login',{});
   }
   var type = req.query.type;
