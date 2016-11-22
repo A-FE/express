@@ -1,5 +1,6 @@
 # 使用node.js开发后台
 > 开发环境node.js + express
+
 ### 创建一个package.json文件
 	cnpm init
 ## 安装express并将其保存在依赖列表中
