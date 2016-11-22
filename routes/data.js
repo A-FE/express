@@ -1,135 +1,155 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
-var PATH = 'public/data/';
+var PATH = './public/data/';
 
- // 读取数据模块 ——客户端调用
-// data/read?type=it
+//读取数据模块，供客户端调用
+//查询接口，token校验
+//公共接口，无需校验
+//data/read?type=it
+//data/read?type=it.json
 router.get('/read', function(req, res, next) {
-    var type = req.params.type || "";
-    fs.readFile(PATH + type + '.json', function (err, data){
-       if(err){
-           return res.send({
-               status:0,
-               info:'读取文件异常'
-           });
-       }
-       var COUNT = 50;
-        // TODO: try{}catch(){}
-        var obj =[];
+    var type = req.param('type') || '';
+    fs.readFile(PATH + type + '.json', function(err, data){
+        if(err){
+            return res.send({
+                status:0,
+                info:'读取文件出现异常'
+            });
+        }
+        var COUNT = 50;
+        //TODO: try
+        var obj = [];
         try{
             obj = JSON.parse(data.toString());
         }catch(e){
             obj = [];
         }
         if(obj.length > COUNT){
-            obj = obj.slice(0,COUNT);
+            obj = obj.slice(0, COUNT);
         }
         return res.send({
             status:1,
             data:obj
-        })
+        });
     });
 });
 
-// 数据存储模块——后台开发使用
-router.post('/write',function(req, res, next){
-    // 文件名
-    var type = req.params.type || "";
-    // 关键字段
-    var url = req.params.url || '';
-    var title = req.params.title || '';
-    var img = req.params.img || '';
+//数据存储模块 后台开发使用
+router.post('/write', function(req, res, next){
+    if(!req.session.user){
+        return res.send({
+            status: 0,
+            info: '未鉴权认证'
+        });
+    }
+    //文件名
+    var type = req.param('type') || '';
+    //关键字段
+    var url = req.param('url') || '';
+    var title = req.param('title') || '';
+    var img = req.param('img') || '';
     if(!type || !url || !title || !img){
         return res.send({
             status:0,
-            info:'提交信息不完整'
-        })
+            info:'提交的字段不全'
+        });
     }
-    // 1)需要拿到文件的信息
-    var filepath = PATH + type + '.json';
-    fs.readFile(filepath,function(err, data){
+    //1)读取文件
+    var filePath = PATH + type + '.json';
+    fs.readFile(filePath, function(err, data){
         if(err){
             return res.send({
                 status:0,
-                info:'读取文件失败'
-            })
+                info: '读取数据失败'
+            });
         }
         var arr = JSON.parse(data.toString());
+        //代表每一条记录
         var obj = {
-            title: title,
             img: img,
             url: url,
+            title: title,
             id: guidGenerate(),
             time: new Date()
         };
-        arr.splice(0,0,obj);
-        // 2)写入文件
+        arr.splice(0, 0, obj);
+        //2)写入文件
         var newData = JSON.stringify(arr);
-        fs.writeFile(filepath, newData, function(err, data){
+        fs.writeFile(filePath, newData, function(err){
             if(err){
                 return res.send({
                     status:0,
-                    info:'写入文件失败'
-                })
+                    info: '写入文件失败'
+                });
             }
             return res.send({
                 status:1,
-                data:newData
-            })
-        })
+                info: obj
+            });
+        });
     });
-
-
-
 });
 
-// 阅读模块写入接口 ——后台开发使用
+//阅读模块写入接口 后台开发使用
 router.post('/write_config', function(req, res, next){
-    //TODO:后期进行提交数据的验证
-    // 防xss攻击
-    // cnpm install
-    // var xss = require('xss')
-    // var str = xss(name)
-    var data = req.body.data;
-    var obj = JSON.parse(data);
-    var newData = JSON.stringify(obj);
-    // 写入
-    fs.writeFile(PATH + 'config.json',newData, function(err){
-        if(err){
-            return res.send({
-                status:0,
-                info:'读取文件失败'
-            })
-        }
+    if(!req.session.user){
         return res.send({
-            status:1,
-            info:'数据写入成功',
-            data:obj
-        })
-    })
-});
-
-// 登录接口
-router.post('/login',function(req, res, next){
-    // 用户名、密码
-    var username = req.body.username;
-    var password = req.body.password;
-    //TODO:对用户名、密码进行校验
-    // 密码加密 md5(password + '随机字符串')
-    if(username === 'admin' && password === '123456'){
-        res.cookie('user',username);
-        return res.send({
-            status:1,
-            info:'登录成功'
+            status: 0,
+            info: '未鉴权认证'
         });
     }
-    return res.send({
-        status:0,
-        info:'登录失败'
-    })
+    //TODO:后期进行提交数据的验证
+    //防xss攻击 xss
+    // npm install xss
+    // require('xss')
+    // var str = xss(name);
+    var data = req.body.data;
+    //TODO ： try catch
+    var obj = JSON.parse(data);
+    var newData = JSON.stringify(obj);
+    //写入
+    fs.writeFile(PATH + 'config.json', newData, function(err){
+        if(err){
+            return res.send({
+                status: 0,
+                info: '写入数据失败'
+            });
+        }
+        return res.send({
+            status: 1,
+            info: obj
+        });
+    });
 });
 
+//登录接口
+router.post('/login', function(req, res, next){
+    //用户名、密码、验证码
+    var username = req.body.username;
+    var password = req.body.password;
+
+    //TODO ：对用户名、密码进行校验
+    //xss处理、判空
+
+    //密码加密 md5(md5(password + '随机字符串'))
+    //密码需要加密－> 可以写入JSON文件
+    if(username === 'admin' && password === '123456'){
+        req.session.user = {
+            username: username
+        };
+        return res.send({
+            status: 1
+        });
+    }
+
+    return res.send({
+        status: 0,
+        info: '登录失败'
+    });
+});
+
+//guid
 function guidGenerate() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random() * 16 | 0,
