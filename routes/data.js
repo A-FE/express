@@ -6,7 +6,7 @@ var PATH = 'public/data/';
  // 读取数据模块 ——客户端调用
 // data/read?type=it
 router.get('/read', function(req, res, next) {
-    var type = req.params.type || "";
+    var type = req.param('type') || "";
     fs.readFile(PATH + type + '.json', function (err, data){
        if(err){
            return res.send({
@@ -34,12 +34,15 @@ router.get('/read', function(req, res, next) {
 
 // 数据存储模块——后台开发使用
 router.post('/write',function(req, res, next){
+    if(!req.cookies.user){
+        return res.render('login',{});
+    }
     // 文件名
-    var type = req.params.type || "";
+    var type = req.param('type') || "";
     // 关键字段
-    var url = req.params.url || '';
-    var title = req.params.title || '';
-    var img = req.params.img || '';
+    var url = req.param('url') || '';
+    var title = req.param('title') || '';
+    var img = req.param('img') || '';
     if(!type || !url || !title || !img){
         return res.send({
             status:0,
@@ -57,7 +60,6 @@ router.post('/write',function(req, res, next){
         }
         var arr = JSON.parse(data.toString());
         var obj = {
-            title: title,
             img: img,
             url: url,
             id: guidGenerate(),
@@ -86,6 +88,9 @@ router.post('/write',function(req, res, next){
 
 // 阅读模块写入接口 ——后台开发使用
 router.post('/write_config', function(req, res, next){
+    if(!req.cookies.user){
+        return res.render('login',{});
+    }
     //TODO:后期进行提交数据的验证
     // 防xss攻击
     // cnpm install
@@ -95,7 +100,7 @@ router.post('/write_config', function(req, res, next){
     var obj = JSON.parse(data);
     var newData = JSON.stringify(obj);
     // 写入
-    fs.writeFile(PATH + 'config.json',newData, function(err){
+    fs.writeFile(PATH + 'config.json',newData, function(err, data){
         if(err){
             return res.send({
                 status:0,
@@ -105,7 +110,7 @@ router.post('/write_config', function(req, res, next){
         return res.send({
             status:1,
             info:'数据写入成功',
-            data:obj
+            data:newData
         })
     })
 });
