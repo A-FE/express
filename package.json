@@ -1,20 +1,17 @@
 {
-  "name": "server",
+  "name": "myapp",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "supervisor ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
-    "cookie-parser": "^1.4.3",
+    "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "ejs": "~2.5.2",
     "express": "~4.14.0",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0"
-  },
-  "devDependencies": {
-    "supervisor": "^0.12.0"
   }
 }
