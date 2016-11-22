@@ -23,13 +23,13 @@
     + data.js   
     + index.js  
 * views/    -------------------------模板文件
-    + edit.ejs  
+    + edit.ejs    
     + error.ejs
     + index.ejs
     + login.ejs
     + tujian.ejs
-* app.js   
-* package.json   
+* app.js   --------------------------存放的Express项目中最基本的配置信息
+* package.json   --------------------项目依赖文件
             
 
 
