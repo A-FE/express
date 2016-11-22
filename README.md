@@ -1,4 +1,4 @@
-# 使用node.js开发后台
+# 使用node.js + express开发简易后台
 > 开发环境node.js + express
 
 ### 创建一个package.json文件
