@@ -9,17 +9,17 @@ var PATH = './public/data/';
 //data/read?type=it
 //data/read?type=it.json
 router.get('/read', function(req, res, next) {
-    var type = req.param('type') || '';
-    fs.readFile(PATH + type + '.json', function(err, data){
-        if(err){
-            return res.send({
-                status:0,
-                info:'读取文件出现异常'
-            });
-        }
-        var COUNT = 50;
-        //TODO: try
-        var obj = [];
+    var type = req.param('type') || "";
+    fs.readFile(PATH + type + '.json', function (err, data){
+       if(err){
+           return res.send({
+               status:0,
+               info:'读取文件异常'
+           });
+       }
+       var COUNT = 50;
+        // TODO: try{}catch(){}
+        var obj =[];
         try{
             obj = JSON.parse(data.toString());
         }catch(e){
@@ -35,17 +35,15 @@ router.get('/read', function(req, res, next) {
     });
 });
 
-//数据存储模块 后台开发使用
-router.post('/write', function(req, res, next){
-    if(!req.session.user){
-        return res.send({
-            status: 0,
-            info: '未鉴权认证'
-        });
+
+// 数据存储模块——后台开发使用
+router.post('/write',function(req, res, next){
+    if(!req.cookies.user){
+        return res.render('login',{});
     }
-    //文件名
-    var type = req.param('type') || '';
-    //关键字段
+    // 文件名
+    var type = req.param('type') || "";
+    // 关键字段
     var url = req.param('url') || '';
     var title = req.param('title') || '';
     var img = req.param('img') || '';
@@ -93,11 +91,8 @@ router.post('/write', function(req, res, next){
 
 //阅读模块写入接口 后台开发使用
 router.post('/write_config', function(req, res, next){
-    if(!req.session.user){
-        return res.send({
-            status: 0,
-            info: '未鉴权认证'
-        });
+    if(!req.cookies.user){
+        return res.render('login',{});
     }
     //TODO:后期进行提交数据的验证
     //防xss攻击 xss
@@ -108,8 +103,9 @@ router.post('/write_config', function(req, res, next){
     //TODO ： try catch
     var obj = JSON.parse(data);
     var newData = JSON.stringify(obj);
-    //写入
-    fs.writeFile(PATH + 'config.json', newData, function(err){
+
+    // 写入
+    fs.writeFile(PATH + 'config.json',newData, function(err, data){
         if(err){
             return res.send({
                 status: 0,
@@ -117,10 +113,11 @@ router.post('/write_config', function(req, res, next){
             });
         }
         return res.send({
-            status: 1,
-            info: obj
-        });
-    });
+            status:1,
+            info:'数据写入成功',
+            data:newData
+        })
+    })
 });
 
 //登录接口

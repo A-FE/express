@@ -27,10 +27,10 @@
             data: obj,
             success: function(data){
                 if(data.status){
-                    //alert('添加数据成功');
+                    alert('添加数据成功');
                     window.location.reload();
                 }else{
-                    //alert('添加失败');
+                    alert('添加失败');
                 }
             },
             error: function(){
@@ -40,6 +40,5 @@
         });
 
     });
-
 
 })(window);

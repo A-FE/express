@@ -1,24 +1,35 @@
-# 使用node.js开发后台
+# 使用node.js + express开发简易后台
 > 开发环境node.js + express
-### 创建一个package.json文件
-	cnpm init
-## 安装express并将其保存在依赖列表中
-	cnpm install express --save
 
-## 安装express-generator应用生成器
-	cnpm install express-generator -g
-	express -h  ----------------------------列出express所有的命令行选项
-
-## 生成应用骨架
-	express -e myapp    ---------------------------创建一个命名为app的应用,-e 是基于ejs模版
-## 通过express生成的目录文件通常是这样的
-![](./public/images/menu.png)
-
-	cd myapp    --------------------------------进入myapp目录
-	cnpm install    -----------------------------安装依赖
-## 启动应用
-	cnmp start  -------------------------------启动，启动命令可在package.json文件中"scripts"中设置
-
-## 然后在浏览器中打开[http://localhost:3000/]( http://localhost:3000/) 网址就可以看到这个应用了，如果出现以下内容，说明启动成功了
+## 将项目克隆到本地
+    git clone https://github.com/peng1992/express.git
+## 安装项目依赖
+    cnpm install
+## 启动项目
+    cnpm start
+## 然后在浏览器中打开[http://localhost:3000/]( http://localhost:3000/) 网址就可以看到这个应用了
 ![](./public/images/normal.png)
+
+## 项目目录
+* bin/
+    + www   -------------------------项目入口文件
+* node_modules/   -------------------项目依赖文件夹，cnpm intall后生成 
+* public/   
+    + data/  ------------------------json数据   
+    + images/   ---------------------图片
+    + js/   -------------------------js文件       
+    + stylesheets/  -----------------css文件
+* routes/   -------------------------路由配置文件夹
+    + data.js   
+    + index.js  
+* views/    -------------------------模板文件
+    + edit.ejs    
+    + error.ejs
+    + index.ejs
+    + login.ejs
+    + tujian.ejs
+* app.js -----------------------------存放的Express项目中最基本的配置信息
+* package.json ---------------------项目依赖文件
+            
+
 
