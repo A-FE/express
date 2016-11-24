@@ -1,5 +1,5 @@
 # 使用node.js + express开发简易后台
-> 开发环境node.js + express
+* 开发环境node.js + express
 ## 项目预览
 ![](./public/images/express.gif)
 ## 将项目克隆到本地
