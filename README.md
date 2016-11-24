@@ -146,7 +146,8 @@
           }
         });
 
-#### 打开[http://localhost:3000/edit?type=it](http://localhost:3000/edit?type=it)，会提示需要登录，![](./public/images/login.png)用户登录接口[/login](http://localhost:3000/login)，在data.js中设置，账号admin密码12345，登录成功后，会出现如下界面
+#### 打开[http://localhost:3000/edit?type=it](http://localhost:3000/edit?type=it)，会提示需要登录，![](./public/images/login.png)
+####用户登录接口[/login](http://localhost:3000/login)，在data.js中设置，账号admin密码12345，登录成功后，会出现如下界面
 ![](./public/images/it.png)
 ### data.js定义的接口
 * 读数据接口---get请求
