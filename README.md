@@ -1,13 +1,18 @@
 # 使用node.js + express开发简易后台
-* 开发环境node.js + express
+### 开发环境node.js + express
+
 ## 项目预览
 ![](./public/images/express.gif)
+
 ## 将项目克隆到本地
     git clone https://github.com/peng1992/express.git
+    
 ## 安装项目依赖
     cnpm install
+    
 ## 启动项目
     cnpm start
+    
 ## 然后在浏览器中打开[http://localhost:3000/]( http://localhost:3000/) 网址就可以看到这个应用了
 ![](./public/images/normal.png)
 
