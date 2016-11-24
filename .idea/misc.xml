@@ -5,6 +5,9 @@
     <option name="id" value="1468859705658" />
     <option name="name" value="default" />
   </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="添加" />
     <OptionsSetting value="true" id="移除" />

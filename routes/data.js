@@ -132,9 +132,7 @@ router.post('/login', function(req, res, next){
     //密码加密 md5(md5(password + '随机字符串'))
     //密码需要加密－> 可以写入JSON文件
     if(username === 'admin' && password === '123456'){
-        req.session.user = {
-            username: username
-        };
+        res.cookie('user',username);
         return res.send({
             status: 1
         });
