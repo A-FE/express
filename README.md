@@ -1,7 +1,7 @@
 # 使用node.js + express开发简易后台
 ### 开发环境node.js + express
-## * [源码](https://github.com/peng1992/express)
-## * 项目预览
+## [源码](https://github.com/peng1992/express)
+## 项目预览
 ![](./public/images/express.gif)
 
 ## 复制项目
